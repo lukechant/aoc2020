@@ -5,22 +5,21 @@ const prepareInput = (rawInput: string) => rawInput
 const input = prepareInput(readInput())
 
 const goA = (input) => {
-  const lines = input.split("\n")
+  const lines = input.split(/\n/)
 
-  const splitArray = lines.map((singleLine) => singleLine.split(/[-\s]/))
+  const splitArray = lines.map((singleLine) => singleLine.split(/[-\s:]+/))
 
   let validPasswords: number = 0
 
   splitArray.forEach((singleLine) => {
     let lower: number = Number.parseInt(singleLine[0])
     let upper: number = Number.parseInt(singleLine[1])
-    let letter: string = singleLine[2][0]
+    let letter: string = singleLine[2]
     let password: string = singleLine[3]
-    const regex = new RegExp(`${letter}`, "g")
+    const letterPattern = new RegExp(`${letter}`, "g")
+    const iterator = password.matchAll(letterPattern)
 
-    const match = password.matchAll(regex)
-
-    let total: number = Array.from(match).length
+    let total: number = Array.from(iterator).length
 
     if (total >= lower && total <= upper) {
       validPasswords++
