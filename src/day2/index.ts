@@ -4,11 +4,11 @@ const prepareInput = (rawInput: string) => rawInput
 
 const input = prepareInput(readInput())
 
+const lines = input.split(/\n/)
+
+const splitArray = lines.map((singleLine) => singleLine.split(/[-\s:]+/))
+
 const goA = (input) => {
-  const lines = input.split(/\n/)
-
-  const splitArray = lines.map((singleLine) => singleLine.split(/[-\s:]+/))
-
   let validPasswords: number = 0
 
   splitArray.forEach((singleLine) => {
@@ -18,7 +18,6 @@ const goA = (input) => {
     let password: string = singleLine[3]
     const letterPattern = new RegExp(`${letter}`, "g")
     const iterator = password.matchAll(letterPattern)
-
     let total: number = Array.from(iterator).length
 
     if (total >= lower && total <= upper) {
@@ -29,14 +28,22 @@ const goA = (input) => {
 }
 
 const goB = (input) => {
-  return
+  let validPasswords: number = 0
+
+  splitArray.forEach((singleLine) => {
+    let positionOne: number = Number.parseInt(singleLine[0])
+    let positionTwo: number = Number.parseInt(singleLine[1])
+    let letter: string = singleLine[2]
+    let password: string = singleLine[3]
+  
+    if (password[positionOne-1] === letter && password[positionTwo-1] !== letter) {
+      validPasswords++
+    } else if (password[positionOne-1] !== letter && password[positionTwo-1] === letter) {
+      validPasswords++
+    }
+  })
+  return validPasswords
 }
-
-/* Tests */
-
-// test()
-
-/* Results */
 
 console.time("Time")
 const resultA = goA(input)
